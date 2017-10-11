@@ -23,6 +23,7 @@ RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && 
     tar xzf ${ANDROID_SDK_FILENAME} && \
     rm -f ${ANDROID_SDK_FILENAME} && \
     chown -R root.root android-sdk-linux && \
+    yes | sudo sdkmanager --licenses
     echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools && \
     echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools && \
     echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}
