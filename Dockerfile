@@ -23,9 +23,9 @@ RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && 
     tar xzf ${ANDROID_SDK_FILENAME} && \
     rm -f ${ANDROID_SDK_FILENAME} && \
     chown -R root.root android-sdk-linux && \
-    echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools && \
-    echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools && \
-    echo y | android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL} && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}" && \
     yes | sdkmanager --licenses
 
 # Setup environment
@@ -34,9 +34,6 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Copy license
 COPY licenses ${ANDROID_HOME}/licenses
-RUN mkdir -p $ANDROID_HOME/licenses/ \
-  && echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_HOME/licenses/android-sdk-license \
-  && echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-license
 
 # Cleaning
 RUN apt clean
