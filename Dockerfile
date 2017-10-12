@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER Piotr Ciastko <ciaasteczkowy@gmail.com>
 
 ENV ANDROID_SDK_FILENAME android-sdk_r24.4.1-linux.tgz
-ENV ANDROID_BUILD_TOOLS build-tools-24.0.2
+ENV ANDROID_BUILD_TOOLS build-tools-25.0.3
 ENV ANDROID_SDK android-25
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
 
@@ -17,6 +17,10 @@ RUN apt update && \
 
 # Install Deps
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force-yes expect git wget libc6-i386 lib32stdc++6 lib32gcc1 lib32ncurses5 lib32z1 python curl libqt5widgets5 && apt-get clean && rm -fr /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy install tools
+COPY tools /opt/tools
+ENV PATH ${PATH}:/opt/tools
 
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
