@@ -22,8 +22,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force
 COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
 
-RUN chown -R ubuntu:ubuntu /opt/tools/android-accept-licenses.sh
-RUN chmod -R 700 /opt/tools/android-accept-licenses.sh
+RUN chmod -R 777 /opt/tools/android-accept-licenses.sh
 
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
