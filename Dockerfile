@@ -38,7 +38,7 @@ ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Copy license
-COPY licenses ${ANDROID_HOME}/licenses
+COPY /opt/licenses ${ANDROID_HOME}/licenses
 
 # Cleaning
 RUN apt clean
