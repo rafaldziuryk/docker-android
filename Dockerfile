@@ -26,7 +26,7 @@ RUN chmod -R 777 /opt/tools/android-accept-licenses.sh
 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
 
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
