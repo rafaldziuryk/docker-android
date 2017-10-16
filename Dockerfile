@@ -38,7 +38,7 @@ RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && 
     /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}"
 
 # Copy license
-COPY /opt/licenses ${ANDROID_HOME}/licenses
+COPY licenses ${ANDROID_HOME}/licenses
 
 # Cleaning
 RUN apt clean
