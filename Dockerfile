@@ -2,8 +2,8 @@ FROM ubuntu:16.04
 MAINTAINER Piotr Ciastko <ciaasteczkowy@gmail.com>
 
 ENV ANDROID_SDK_FILENAME android-sdk_r24.4.1-linux.tgz
-ENV ANDROID_BUILD_TOOLS build-tools-25.0.3
-ENV ANDROID_SDK android-25
+ENV ANDROID_BUILD_TOOLS build-tools-26.0.2
+ENV ANDROID_SDK android-26
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
 
 # Install java8
