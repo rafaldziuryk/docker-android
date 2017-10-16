@@ -24,6 +24,10 @@ ENV PATH ${PATH}:/opt/tools
 
 RUN chmod -R 777 /opt/tools/android-accept-licenses.sh
 
+# Setup environment
+ENV ANDROID_HOME /opt/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
     tar xzf ${ANDROID_SDK_FILENAME} && \
@@ -31,11 +35,10 @@ RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && 
     chown -R root.root android-sdk-linux && \
     /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
     /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
-    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}"
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}" && \
+    yes | sdkmanager --licenses
 
-# Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
 
 # Copy license
 COPY /opt/licenses ${ANDROID_HOME}/licenses
