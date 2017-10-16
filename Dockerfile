@@ -20,7 +20,8 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force
 
 # Copy install tools
 COPY tools /opt/tools
-ENV PATH ${PATH}:/opt/tools
+ENV ANDROID_HOME /opt/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
