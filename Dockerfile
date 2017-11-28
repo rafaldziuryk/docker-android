@@ -6,6 +6,9 @@ ENV ANDROID_BUILD_TOOLS build-tools-26.0.2
 ENV ANDROID_SDK android-26
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
 
+#Instal Maven
+RUN mvn install
+
 # Install java8
 RUN apt update && \
     apt install -y software-properties-common && \
