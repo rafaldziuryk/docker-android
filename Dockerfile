@@ -7,7 +7,18 @@ ENV ANDROID_SDK android-26
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
 
 #Instal Maven
-RUN mvn install
+RUN aptget update
+RUN apt-get install -y maven
+
+ADD pom.xml /pom.xml
+RUN ["mvn", "dependency:resolve"]
+RUN ["mvn", "verify"]
+
+ADD src /src
+RUN ["mvn", "package"]
+
+EXPOSE 4567
+CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/sample-1.0.jar"]
 
 # Install java8
 RUN apt update && \
