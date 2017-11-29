@@ -26,13 +26,14 @@ ENV PATH ${PATH}:/opt/tools
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
     tar xzf ${ANDROID_SDK_FILENAME} && \
     rm -f ${ANDROID_SDK_FILENAME} && \
-    chown -R root.root android-sdk-linux && \
-    ${ANDROID_HOME}/tools/bin/sdkmanager --update && \
-    yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
+    chown -R root.root android-sdk-linux
 
 # Setup environment
 ENV ANDROID_HOME /opt/android-sdk-linux
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+RUN ${ANDROID_HOME}/tools/bin/sdkmanager --update && \
+    yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 
 # Copy license
 COPY licenses ${ANDROID_HOME}/licenses
