@@ -2,23 +2,9 @@ FROM ubuntu:16.04
 MAINTAINER Piotr Ciastko <ciaasteczkowy@gmail.com>
 
 ENV ANDROID_SDK_FILENAME android-sdk_r24.4.1-linux.tgz
-ENV ANDROID_BUILD_TOOLS build-tools-26.0.2
-ENV ANDROID_SDK android-26
+ENV ANDROID_BUILD_TOOLS build-tools-25.0.3
+ENV ANDROID_SDK android-25
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
-
-#Instal Maven
-RUN apt-get update
-RUN apt-get install -y maven
-
-ADD pom.xml /pom.xml
-RUN ["mvn", "dependency:resolve"]
-RUN ["mvn", "verify"]
-
-ADD src /src
-RUN ["mvn", "package"]
-
-EXPOSE 4567
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/sample-1.0.jar"]
 
 # Install java8
 RUN apt update && \
@@ -36,21 +22,19 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y --force
 COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
 
-RUN chmod -R 777 /opt/tools/android-accept-licenses.sh
-
-# Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools/bin
-
 # Install Android SDK
 RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
     tar xzf ${ANDROID_SDK_FILENAME} && \
     rm -f ${ANDROID_SDK_FILENAME} && \
-    chown -R root.root android-sdk-linux
+    chown -R root.root android-sdk-linux && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter platform-tools,tools" && \
+    /opt/tools/android-accept-licenses.sh "android-sdk-linux/tools/android update sdk --all --no-ui --filter ${ANDROID_BUILD_TOOLS},${ANDROID_SDK},${ANDROID_ADDITIONAL}" && \
+    yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 
-# Make licences Android SDK
-RUN cd ${ANDROID_HOME} && \
-    yes | tools/bin/sdkmanager --licences 
+# Setup environment
+ENV ANDROID_HOME /opt/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
 # Copy license
 COPY licenses ${ANDROID_HOME}/licenses
