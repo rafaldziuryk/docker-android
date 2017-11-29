@@ -7,7 +7,7 @@ ENV ANDROID_SDK android-26
 ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
 
 #Instal Maven
-RUN aptget update
+RUN apt-get update
 RUN apt-get install -y maven
 
 ADD pom.xml /pom.xml
