@@ -5,7 +5,6 @@ ENV ANDROID_COMPILE_SDK: "25"
 ENV ANDROID_BUILD_TOOLS: "25.0.3"
 ENV ANDROID_SDK_TOOLS_REV: "3859397"  # "26.0.1"ANDROID_CMAKE_REV: "3.6.3155560"
 
-
 # Install java8
 RUN apt update && \
     apt install -y software-properties-common && \
