@@ -1,10 +1,10 @@
 FROM ubuntu:16.04
 MAINTAINER Piotr Ciastko <ciaasteczkowy@gmail.com>
 
-ENV ANDROID_SDK_FILENAME android-sdk_r24.4.1-linux.tgz
-ENV ANDROID_BUILD_TOOLS build-tools-25.0.3
-ENV ANDROID_SDK android-25
-ENV ANDROID_ADDITIONAL extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services
+ANDROID_COMPILE_SDK: "25"
+ANDROID_BUILD_TOOLS: "25.0.3"
+ANDROID_SDK_TOOLS_REV: "3859397"  # "26.0.1"ANDROID_CMAKE_REV: "3.6.3155560"
+
 
 # Install java8
 RUN apt update && \
@@ -23,20 +23,23 @@ COPY tools /opt/tools
 ENV PATH ${PATH}:/opt/tools
 
 # Install Android SDK
-RUN cd /opt && wget -q https://dl.google.com/android/${ANDROID_SDK_FILENAME} && \
-    tar xzf ${ANDROID_SDK_FILENAME} && \
-    rm -f ${ANDROID_SDK_FILENAME} && \
-    chown -R root.root android-sdk-linux
-
-# Setup environment
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-
-RUN ${ANDROID_HOME}/tools/bin/sdkmanager --update && \
-    yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
-
-# Copy license
-COPY licenses ${ANDROID_HOME}/licenses
+RUN mkdir $HOME/.android && \
+    echo 'count=0' > $HOME/.android/repositories.cfg && \
+    wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip && \
+    mkdir $PWD/android-sdk-linux && \
+    unzip -qq android-sdk.zip -d $PWD/android-sdk-linux && \
+    export ANDROID_HOME=$PWD/android-sdk-linux && \
+    export PATH=$PATH:$ANDROID_HOME/platform-tools/:$ANDROID_NDK_HOME && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager --update  && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'tools' && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'platform-tools' && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;'$ANDROID_BUILD_TOOLS && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-'$ANDROID_COMPILE_SDK && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' && \
+    echo y | $ANDROID_HOME/tools/bin/sdkmanager 'cmake;'$ANDROID_CMAKE_REV && \
+    chmod +x ./gradlew
 
 # Cleaning
 RUN apt clean
