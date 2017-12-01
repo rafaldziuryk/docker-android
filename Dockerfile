@@ -16,8 +16,9 @@ RUN apt update && \
     
 # Install Android SDK
 RUN mkdir $HOME/.android && \
-    echo 'count=0' > $HOME/.android/repositories.cfg && \
-    wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip
+    echo 'count=0' > $HOME/.android/repositories.cfg
+    
+RUN wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip
 #     mkdir $PWD/android-sdk-linux && \
 #     unzip -qq android-sdk.zip -d $PWD/android-sdk-linux && \
 #     export ANDROID_HOME=$PWD/android-sdk-linux && \
