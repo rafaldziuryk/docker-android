@@ -17,11 +17,11 @@ RUN apt update && \
 # Install Android SDK
 RUN mkdir $HOME/.android && \
     echo 'count=0' > $HOME/.android/repositories.cfg && \
-    wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip && \
-    mkdir $PWD/android-sdk-linux && \
-    unzip -qq android-sdk.zip -d $PWD/android-sdk-linux && \
-    export ANDROID_HOME=$PWD/android-sdk-linux && \
-    export PATH=$PATH:$ANDROID_HOME/platform-tools/
+    wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip
+#     mkdir $PWD/android-sdk-linux && \
+#     unzip -qq android-sdk.zip -d $PWD/android-sdk-linux && \
+#     export ANDROID_HOME=$PWD/android-sdk-linux && \
+#     export PATH=$PATH:$ANDROID_HOME/platform-tools/
 #     echo y | $ANDROID_HOME/tools/bin/sdkmanager --update  && \
 #     echo y | $ANDROID_HOME/tools/bin/sdkmanager 'tools' && \
 #     echo y | $ANDROID_HOME/tools/bin/sdkmanager 'platform-tools' && \
